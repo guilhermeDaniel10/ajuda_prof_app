@@ -17,9 +17,8 @@ public class Turma {
     private String sigla;
 
 
-    public Turma(String escola, Integer idTurma, Short ano, String sigla) {
+    public Turma(String escola, Short ano, String sigla) {
         this.escola = escola;
-        this.idTurma = idTurma;
         this.ano = ano;
         this.sigla = sigla;
     }

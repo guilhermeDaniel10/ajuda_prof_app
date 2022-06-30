@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface TurmaRepository extends JpaRepository<Turma, Integer> {
 
     Turma findByEscolaAndAnoAndSigla(String escola, Short ano, String sigla);
+
 }

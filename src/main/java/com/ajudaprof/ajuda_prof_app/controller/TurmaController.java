@@ -4,6 +4,7 @@ import com.ajudaprof.ajuda_prof_app.data.model.Turma;
 import com.ajudaprof.ajuda_prof_app.data.payloads.request.TurmaRequest;
 import com.ajudaprof.ajuda_prof_app.data.payloads.response.DefaultMessages;
 import com.ajudaprof.ajuda_prof_app.data.payloads.response.MessageResponse;
+import com.ajudaprof.ajuda_prof_app.exception.RepeatedResourceException;
 import com.ajudaprof.ajuda_prof_app.exception.ResourceAlreadyExists;
 import com.ajudaprof.ajuda_prof_app.exception.ResourceNotFoundException;
 import com.ajudaprof.ajuda_prof_app.service.interfaces.TurmaService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -49,6 +51,9 @@ public class TurmaController {
         } catch (ResourceNotFoundException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        } catch (RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -71,6 +76,42 @@ public class TurmaController {
         } catch (ResourceNotFoundException ex){
             MessageResponse erro = new MessageResponse(ex.getMessage());
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Turma>> getAllTurmas () {
+        try {
+            List<Turma> turmas = turmaService.getAllTurma();
+            return new ResponseEntity<>(turmas, HttpStatus.OK);
+        } catch( ResourceNotFoundException ex){
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Object> getTurmaById (@PathVariable("id") Integer id) {
+        try {
+            Turma turma = turmaService.getASingleTurma(id);
+            return new ResponseEntity<>(turma, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<Object> getTurmaByInfo(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla) {
+        try {
+            Turma turma = turmaService.getTurmaByInfo(escola, ano, sigla);
+            return new ResponseEntity<>(turma, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        } catch (RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
         }
     }
 

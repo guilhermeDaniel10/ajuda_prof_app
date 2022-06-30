@@ -16,7 +16,7 @@ public interface TurmaService {
     Turma updateTurmaByInfo(String escola, Short ano, String sigla, TurmaRequest turmaRequest);
     void deleteTurma(Integer idTurma);
     void deleteTurmaByInfo(String escola, Short ano, String sigla);
-    Turma getASingleTurma(Long idTurma);
+    Turma getASingleTurma(Integer idTurma);
     List<Turma> getAllTurma();
     Turma getTurmaByInfo(String escola, Short ano, String sigla);
 }
