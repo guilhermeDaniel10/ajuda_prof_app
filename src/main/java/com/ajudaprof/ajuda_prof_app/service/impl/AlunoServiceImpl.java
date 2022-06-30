@@ -61,12 +61,11 @@ public class AlunoServiceImpl implements AlunoService {
     public Aluno updateAluno(TurmaDTO turmaDTO, Integer numeroAluno, AlunoRequest alunoRequest) {
         Aluno aluno;
         Turma turma;
-
         try {
             aluno = this.getAlunoByTurmaNumero(turmaDTO, numeroAluno);
-            System.out.println(aluno);
+
         } catch (ResourceNotFoundException ex) {
-            String[] arrObj = {alunoRequest.getPrimeiroNome(), alunoRequest.getUltimoNome(),turmaDTO.toStringDTO(), alunoRequest.getNumeroAluno().toString()};
+            String[] arrObj = {alunoRequest.getPrimeiroNome(), alunoRequest.getUltimoNome(), turmaDTO.toStringDTO(), alunoRequest.getNumeroAluno().toString()};
             throw new ResourceNotFoundException("Aluno", ExceptionValues.ALUNO_EXISTENTE_OU_NAO.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
         TurmaDTO updateTurmaDTO = new TurmaDTO(alunoRequest.getEscola(), alunoRequest.getAno(), alunoRequest.getSigla());
@@ -74,7 +73,7 @@ public class AlunoServiceImpl implements AlunoService {
         try {
             updateTurma = this.turmaService.getTurmaByInfo(updateTurmaDTO.getEscola(), updateTurmaDTO.getAno(), updateTurmaDTO.getSigla());
         } catch (ResourceNotFoundException ex) {
-            String[] arrObj = {turmaDTO.toStringDTO()};
+            String[] arrObj = {updateTurmaDTO.toStringDTO()};
             throw new ResourceNotFoundException("Turma", ExceptionValues.TURMA_INEXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
 
@@ -91,24 +90,30 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     public Aluno updateAlunoById(Long idAluno, AlunoRequest alunoRequest) {
         Aluno aluno;
-        TurmaDTO turmaDTO = new TurmaDTO(alunoRequest.getEscola(), alunoRequest.getAno(), alunoRequest.getSigla());
+        Turma turma;
         try {
-            Turma turma = this.turmaService.getTurmaByInfo(alunoRequest.getEscola(), alunoRequest.getAno(), alunoRequest.getSigla());
-
-
             aluno = this.getAlunoById(idAluno);
-            aluno.setNumeroAluno(alunoRequest.getNumeroAluno());
-            aluno.setTurma(turma);
-            aluno.setEmail(alunoRequest.getEmail());
-            aluno.setPrimeiroNome(alunoRequest.getPrimeiroNome());
-            aluno.setUltimoNome(alunoRequest.getUltimoNome());
 
-            alunoRepository.save(aluno);
-            return aluno;
         } catch (ResourceNotFoundException ex) {
-            String[] arrObj = {alunoRequest.getPrimeiroNome(), alunoRequest.getUltimoNome(), turmaDTO.toStringDTO(), alunoRequest.getNumeroAluno().toString()};
-            throw new ResourceNotFoundException("Aluno", ExceptionValues.ALUNO_EXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
+            String[] arrObj = {String.valueOf(idAluno)};
+            throw new ResourceNotFoundException("Aluno", ExceptionValues.ALUNO_INEXISTENTE_ID.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
+        TurmaDTO updateTurmaDTO = new TurmaDTO(alunoRequest.getEscola(), alunoRequest.getAno(), alunoRequest.getSigla());
+        Turma updateTurma;
+        try {
+            updateTurma = this.turmaService.getTurmaByInfo(updateTurmaDTO.getEscola(), updateTurmaDTO.getAno(), updateTurmaDTO.getSigla());
+        } catch (ResourceNotFoundException ex) {
+            String[] arrObj = {updateTurmaDTO.toStringDTO()};
+            throw new ResourceNotFoundException("Turma", ExceptionValues.TURMA_INEXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
+        }
+
+        aluno.setNumeroAluno(alunoRequest.getNumeroAluno());
+        aluno.setTurma(updateTurma);
+        aluno.setEmail(alunoRequest.getEmail());
+        aluno.setPrimeiroNome(alunoRequest.getPrimeiroNome());
+        aluno.setUltimoNome(alunoRequest.getUltimoNome());
+        alunoRepository.save(aluno);
+        return aluno;
     }
 
     @Override
@@ -147,7 +152,12 @@ public class AlunoServiceImpl implements AlunoService {
 
     @Override
     public Aluno getAlunoByEmail(String email) {
-        return null;
+        Aluno aluno = alunoRepository.findByEmail(email);
+        if (aluno == null) {
+            String[] arrObj = {email};
+            throw new ResourceNotFoundException("Aluno", ExceptionValues.ALUNO_INEXISTENTE_EMAIL.getValoresErro(), StringParser.stringArrayToString(arrObj));
+        }
+        return aluno;
     }
 
 

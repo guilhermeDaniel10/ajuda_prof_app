@@ -80,10 +80,34 @@ public class AlunoController {
         }
     }
 
+    @GetMapping("/findByEmail")
+    public ResponseEntity<Object> getAlunoByEmail(@RequestParam String email) {
+        try {
+            Aluno aluno = alunoService.getAlunoByEmail(email);
+            return new ResponseEntity<>(aluno, HttpStatus.OK);
+        } catch (ResourceNotFoundException | RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/update")
     public Object updateAlunoByInfo(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero, @RequestBody AlunoRequest aluno) {
         try {
             return alunoService.updateAluno(new TurmaDTO(escola, ano, sigla), numero, aluno);
+        } catch (ResourceNotFoundException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        } catch (RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public Object updateAlunoById(@PathVariable("id") Long id, @RequestBody AlunoRequest aluno) {
+        try {
+            return alunoService.updateAlunoById(id, aluno);
         } catch (ResourceNotFoundException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);

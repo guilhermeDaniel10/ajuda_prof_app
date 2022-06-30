@@ -6,6 +6,8 @@ public enum ExceptionValues {
     TURMA_INEXISTENTE("Escola, Ano e Sigla"),
     ALUNO_EXISTENTE("Primeiro Nome, Último Nome, Turma e Número"),
     ALUNO_EXISTENTE_OU_NAO("Primeiro Nome, Último Nome, Turma e Número"),
+    ALUNO_INEXISTENTE_ID("Id"),
+    ALUNO_INEXISTENTE_EMAIL("Email"),
     ALUNO_INEXISTENTE("Primeiro Nome e Último Nome"),
     INEXISTENTE("Sem informação");
 
