@@ -14,26 +14,43 @@ public class Aluno {
     private String ultimoNome;
     @Column
     private String email;
+    @OneToOne
+    private Turma turma;
+
+    public Turma getTurma() {
+        return turma;
+    }
+
+    public void setTurma(Turma turma) {
+        this.turma = turma;
+    }
+
+    @Column
+    private Integer numeroAluno;
+
 
     public Aluno() {
 
     }
-    public Aluno(Long idAluno, String primeiroNome, String ultimoNome, String email) {
+
+    public Aluno(Long idAluno, String primeiroNome, String ultimoNome, String email, Integer numeroAluno) {
         this.idAluno = idAluno;
         this.primeiroNome = primeiroNome;
         this.ultimoNome = ultimoNome;
         this.email = email;
+        this.numeroAluno = numeroAluno;
     }
 
-    public Aluno(Aluno a){
-        this.idAluno = idAluno;
-        this.primeiroNome = primeiroNome;
-        this.ultimoNome = ultimoNome;
-        this.email = email;
+    public Aluno(Aluno a) {
+        this.idAluno = a.idAluno;
+        this.primeiroNome = a.primeiroNome;
+        this.ultimoNome = a.ultimoNome;
+        this.email = a.email;
+        this.numeroAluno = a.numeroAluno;
     }
 
     public Long getIdAluno() {
-        return idAluno;
+        return this.idAluno;
     }
 
     public void setIdAluno(Long idAluno) {
@@ -41,7 +58,7 @@ public class Aluno {
     }
 
     public String getPrimeiroNome() {
-        return primeiroNome;
+        return this.primeiroNome;
     }
 
     public void setPrimeiroNome(String primeiroNome) {
@@ -49,7 +66,7 @@ public class Aluno {
     }
 
     public String getUltimoNome() {
-        return ultimoNome;
+        return this.ultimoNome;
     }
 
     public void setUltimoNome(String ultimoNome) {
@@ -57,11 +74,19 @@ public class Aluno {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getNumeroAluno() {
+        return this.numeroAluno;
+    }
+
+    public void setNumeroAluno(Integer numeroAluno) {
+        this.numeroAluno = numeroAluno;
     }
 
     @Override
@@ -69,12 +94,12 @@ public class Aluno {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Aluno aluno = (Aluno) o;
-        return idAluno.equals(aluno.idAluno) && primeiroNome.equals(aluno.primeiroNome) && ultimoNome.equals(aluno.ultimoNome) && email.equals(aluno.email);
+        return primeiroNome.equals(aluno.primeiroNome) && ultimoNome.equals(aluno.ultimoNome) && email.equals(aluno.email) && turma.equals(aluno.turma) && numeroAluno.equals(aluno.numeroAluno);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idAluno, primeiroNome, ultimoNome, email);
+        return Objects.hash(primeiroNome, ultimoNome, email, turma, numeroAluno);
     }
 
     @Override
@@ -84,6 +109,8 @@ public class Aluno {
                 ", primeiroNome='" + primeiroNome + '\'' +
                 ", ultimoNome='" + ultimoNome + '\'' +
                 ", email='" + email + '\'' +
+                ", turma=" + turma +
+                ", numeroAluno=" + numeroAluno +
                 '}';
     }
 }
