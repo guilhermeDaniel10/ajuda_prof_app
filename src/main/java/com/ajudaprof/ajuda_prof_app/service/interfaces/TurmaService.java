@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface TurmaService {
     MessageResponse createTurma(TurmaRequest turmaRequest);
     Optional<Turma> updateTurma(Integer idTurma, TurmaRequest turmaRequest);
-
     Turma updateTurmaByInfo(String escola, Short ano, String sigla, TurmaRequest turmaRequest);
     void deleteTurma(Integer idTurma);
     void deleteTurmaByInfo(String escola, Short ano, String sigla);

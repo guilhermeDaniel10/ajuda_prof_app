@@ -16,17 +16,9 @@ public class Aluno {
     private String email;
     @OneToOne
     private Turma turma;
-
-    public Turma getTurma() {
-        return turma;
-    }
-
-    public void setTurma(Turma turma) {
-        this.turma = turma;
-    }
-
     @Column
     private Integer numeroAluno;
+
 
 
     public Aluno() {
@@ -75,6 +67,13 @@ public class Aluno {
 
     public String getEmail() {
         return this.email;
+    }
+
+    public Turma getTurma() {
+        return turma;
+    }
+    public void setTurma(Turma turma) {
+        this.turma = turma;
     }
 
     public void setEmail(String email) {

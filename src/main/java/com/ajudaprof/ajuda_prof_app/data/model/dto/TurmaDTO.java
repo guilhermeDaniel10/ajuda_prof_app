@@ -1,29 +1,23 @@
-package com.ajudaprof.ajuda_prof_app.data.model;
+package com.ajudaprof.ajuda_prof_app.data.model.dto;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-public class Turma {
+public class TurmaDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idTurma;
-    @Column
     private String escola;
-    @Column
     private Short ano;
-    @Column
     private String sigla;
 
-
-    public Turma(String escola, Short ano, String sigla) {
+    public TurmaDTO(String escola, Short ano, String sigla) {
         this.escola = escola;
         this.ano = ano;
         this.sigla = sigla;
     }
 
-    public Turma() {
+    public TurmaDTO(TurmaDTO turmaDTO){
+        this.escola = turmaDTO.escola;
+        this.ano = turmaDTO.ano;
+        this.sigla = turmaDTO.sigla;
     }
 
     public String getEscola() {
@@ -32,14 +26,6 @@ public class Turma {
 
     public void setEscola(String escola) {
         this.escola = escola;
-    }
-
-    public Integer getIdTurma() {
-        return this.idTurma;
-    }
-
-    public void setIdTurma(Integer idTurma) {
-        this.idTurma = idTurma;
     }
 
     public Short getAno() {
@@ -58,16 +44,12 @@ public class Turma {
         this.sigla = sigla;
     }
 
-    public String turmaFormat(){
-        return this.ano + "º" + this.sigla;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Turma turma = (Turma) o;
-        return escola.equals(turma.escola) && ano.equals(turma.ano) && sigla.equals(turma.sigla);
+        TurmaDTO turmaDTO = (TurmaDTO) o;
+        return escola.equals(turmaDTO.escola) && ano.equals(turmaDTO.ano) && sigla.equals(turmaDTO.sigla);
     }
 
     @Override
@@ -77,11 +59,14 @@ public class Turma {
 
     @Override
     public String toString() {
-        return "Turma{" +
-                "idTurma=" + idTurma +
-                ", escola='" + escola + '\'' +
+        return "TurmaDTO{" +
+                "escola='" + escola + '\'' +
                 ", ano=" + ano +
                 ", sigla='" + sigla + '\'' +
                 '}';
+    }
+
+    public String toStringDTO(){
+        return this.getEscola() + ", " + this.ano + "º" + this.sigla;
     }
 }
