@@ -20,6 +20,6 @@ public interface AlunoService {
     Aluno getAlunoById(Long idAluno);
     Aluno getAlunoByEmail(String email);
     void deleteAluno(Long idAluno);
-    void deleteAlunoByNumeroTurma(Turma turma, Integer numeroAluno);
+    void deleteAlunoByNumeroTurma(TurmaDTO turmaDTO, Integer numeroAluno);
     List<Aluno> getAllAlunos();
 }

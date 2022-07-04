@@ -119,7 +119,7 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     public List<Aluno> getAlunoByNome(String primeiroNome, String ultimoNome) {
         List<Aluno> alunos = alunoRepository.findByPrimeiroNomeAndUltimoNome(primeiroNome, ultimoNome);
-        System.out.println(alunos);
+
         if (alunos == null || alunos.isEmpty()) {
             String[] arrObj = {primeiroNome, ultimoNome};
             throw new ResourceNotFoundException("Aluno", ExceptionValues.ALUNO_INEXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
@@ -137,7 +137,7 @@ public class AlunoServiceImpl implements AlunoService {
             throw new ResourceNotFoundException("Aluno", ExceptionValues.TURMA_EXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
         Aluno aluno = alunoRepository.findByTurmaAndNumeroAluno(turma, numeroAluno);
-        System.out.println(aluno);
+
         if (aluno == null) {
             String[] arrObj = {turmaDTO.toStringDTO(), numeroAluno.toString()};
             throw new ResourceNotFoundException("Aluno", ExceptionValues.ALUNO_EXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
@@ -163,12 +163,20 @@ public class AlunoServiceImpl implements AlunoService {
 
     @Override
     public void deleteAluno(Long idAluno) {
-
+        if (alunoRepository.findById(idAluno) != null) {
+            alunoRepository.deleteById(idAluno);
+        } else throw new ResourceNotFoundException("Aluno", "id", idAluno);
     }
 
     @Override
-    public void deleteAlunoByNumeroTurma(Turma turma, Integer numeroAluno) {
-
+    public void deleteAlunoByNumeroTurma(TurmaDTO turmaDTO, Integer numeroAluno) {
+        try {
+            Aluno aluno = this.getAlunoByTurmaNumero(turmaDTO, numeroAluno);
+            alunoRepository.delete(aluno);
+        } catch (ResourceNotFoundException ex){
+            String[] arrObj = {turmaDTO.toStringDTO(), numeroAluno.toString()};
+            throw new ResourceNotFoundException("Aluno", ExceptionValues.TURMA_ALUNO_INEXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
+        }
     }
 
     @Override

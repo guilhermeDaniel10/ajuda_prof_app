@@ -5,6 +5,7 @@ import com.ajudaprof.ajuda_prof_app.data.model.Turma;
 import com.ajudaprof.ajuda_prof_app.data.model.dto.TurmaDTO;
 import com.ajudaprof.ajuda_prof_app.data.payloads.request.AlunoRequest;
 import com.ajudaprof.ajuda_prof_app.data.payloads.request.TurmaRequest;
+import com.ajudaprof.ajuda_prof_app.data.payloads.response.DefaultMessages;
 import com.ajudaprof.ajuda_prof_app.data.payloads.response.MessageResponse;
 import com.ajudaprof.ajuda_prof_app.exception.RepeatedResourceException;
 import com.ajudaprof.ajuda_prof_app.exception.ResourceAlreadyExists;
@@ -114,6 +115,28 @@ public class AlunoController {
         } catch (RepeatedResourceException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
             return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteAluno(@PathVariable("id") Long id) {
+        try {
+            alunoService.deleteAluno(id);
+            return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(),HttpStatus.OK);
+        } catch (ResourceNotFoundException ex){
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteEmployee(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero) {
+        try {
+            alunoService.deleteAlunoByNumeroTurma(new TurmaDTO(escola, ano, sigla), numero);
+            return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(),HttpStatus.OK);
+        } catch (ResourceNotFoundException ex){
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
 
