@@ -1,0 +1,145 @@
+package com.ajudaprof.ajuda_prof_app.controller;
+
+import com.ajudaprof.ajuda_prof_app.data.model.Aluno;
+import com.ajudaprof.ajuda_prof_app.data.model.Professor;
+import com.ajudaprof.ajuda_prof_app.data.model.dto.TurmaDTO;
+import com.ajudaprof.ajuda_prof_app.data.payloads.request.AlunoRequest;
+import com.ajudaprof.ajuda_prof_app.data.payloads.request.ProfessorRequest;
+import com.ajudaprof.ajuda_prof_app.data.payloads.response.DefaultMessages;
+import com.ajudaprof.ajuda_prof_app.data.payloads.response.MessageResponse;
+import com.ajudaprof.ajuda_prof_app.exception.RepeatedResourceException;
+import com.ajudaprof.ajuda_prof_app.exception.ResourceAlreadyExists;
+import com.ajudaprof.ajuda_prof_app.exception.ResourceNotFoundException;
+import com.ajudaprof.ajuda_prof_app.service.interfaces.ProfessorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLIntegrityConstraintViolationException;
+
+@RestController
+@RequestMapping("/api/professor")
+public class ProfessorController {
+
+    @Autowired
+    ProfessorService professorService;
+
+    @PostMapping("/add")
+    public ResponseEntity<MessageResponse> addProfessor(@RequestBody ProfessorRequest professor) {
+        try {
+            MessageResponse newProfessor = professorService.createProfessor(professor);
+            return new ResponseEntity<>(newProfessor, HttpStatus.CREATED);
+        } catch (ResourceAlreadyExists | ResourceNotFoundException | RepeatedResourceException  exception) {
+            MessageResponse erro = new MessageResponse(exception.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/email")
+    public Object updateProfessorByEmail(@RequestParam String email, @RequestBody ProfessorRequest professorRequest) {
+        try {
+            return professorService.updateProfessorByEmail(email, professorRequest);
+        } catch (ResourceNotFoundException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        } catch (RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/username")
+    public Object updateProfessorByUsername(@RequestParam String username, @RequestBody ProfessorRequest professorRequest) {
+        try {
+            return professorService.updateProfessorByUsername(username, professorRequest);
+        } catch (ResourceNotFoundException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        } catch (RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/id")
+    public Object updateProfessorByUsername(@RequestParam Long id, @RequestBody ProfessorRequest professorRequest) {
+        try {
+            return professorService.updateProfessorById(id, professorRequest);
+        } catch (ResourceNotFoundException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        } catch (RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findById")
+    public ResponseEntity<Object> getProfessorById(@RequestParam Long id) {
+        try {
+            Professor professor = professorService.getProfessorById(id);
+            return new ResponseEntity<>(professor, HttpStatus.OK);
+        } catch (ResourceNotFoundException | RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByEmail")
+    public ResponseEntity<Object> getProfessorByEmail(@RequestParam String email) {
+        try {
+            Professor professor = professorService.getProfessorByEmail(email);
+            return new ResponseEntity<>(professor, HttpStatus.OK);
+        } catch (ResourceNotFoundException | RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByUsername")
+    public ResponseEntity<Object> getProfessorByUsername(@RequestParam String username) {
+        try {
+            Professor professor = professorService.getProfessorByUsername(username);
+            return new ResponseEntity<>(professor, HttpStatus.OK);
+        } catch (ResourceNotFoundException | RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteProfessorById(@PathVariable("id") Long id) {
+        try {
+            professorService.deleteProfessorById(id);
+            return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(),HttpStatus.OK);
+        } catch (ResourceNotFoundException ex){
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/deleteByUsername")
+    public ResponseEntity<Object> deleteProfessorByUsername(@RequestParam String username) {
+        try {
+            professorService.deleteProfessorByUsername(username);
+            return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(),HttpStatus.OK);
+        } catch (ResourceNotFoundException ex){
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/deleteByEmail")
+    public ResponseEntity<Object> deleteProfessorByEmail(@RequestParam String email) {
+        try {
+            professorService.deleteProfessorByEmail(email);
+            return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(),HttpStatus.OK);
+        } catch (ResourceNotFoundException ex){
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+}

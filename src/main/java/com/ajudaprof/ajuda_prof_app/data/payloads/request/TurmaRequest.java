@@ -5,9 +5,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class TurmaRequest {
+
     @NotBlank
     @NotNull
-    private String escola;
+    private String usernameProfessor;
     @NotBlank
     @NotNull
     private Short ano;
@@ -15,12 +16,12 @@ public class TurmaRequest {
     @NotNull
     private String sigla;
 
-    public String getEscola() {
-        return escola;
+    public String getUsernameProfessor() {
+        return usernameProfessor;
     }
 
-    public void setEscola(String escola) {
-        this.escola = escola;
+    public void setUsernameProfessor(String usernameProfessor) {
+        this.usernameProfessor = usernameProfessor;
     }
     public Short getAno() {
         return ano;

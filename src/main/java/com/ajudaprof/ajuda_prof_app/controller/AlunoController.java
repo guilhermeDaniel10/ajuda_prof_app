@@ -130,7 +130,7 @@ public class AlunoController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteEmployee(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero) {
+    public ResponseEntity<?> deleteAlunoByInfo(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero) {
         try {
             alunoService.deleteAlunoByNumeroTurma(new TurmaDTO(escola, ano, sigla), numero);
             return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(),HttpStatus.OK);

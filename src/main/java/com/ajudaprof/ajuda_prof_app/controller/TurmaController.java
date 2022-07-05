@@ -46,9 +46,9 @@ public class TurmaController {
     }
 
     @PutMapping("/update")
-    public Object updateTurmaByInfo(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla, @RequestBody TurmaRequest turma) {
+    public Object updateTurmaByInfo(@RequestParam String username, @RequestParam Short ano, @RequestParam String sigla, @RequestBody TurmaRequest turma) {
         try {
-            return turmaService.updateTurmaByInfo(escola, ano, sigla, turma);
+            return turmaService.updateTurmaByInfo(username, ano, sigla, turma);
         } catch (ResourceNotFoundException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
@@ -70,9 +70,9 @@ public class TurmaController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteEmployee(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla) {
+    public ResponseEntity<?> deleteTurmaByInfo(@RequestParam String username, @RequestParam Short ano, @RequestParam String sigla) {
         try {
-            turmaService.deleteTurmaByInfo(escola, ano, sigla);
+            turmaService.deleteTurmaByInfo(username, ano, sigla);
             return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(),HttpStatus.OK);
         } catch (ResourceNotFoundException ex){
             MessageResponse erro = new MessageResponse(ex.getMessage());
@@ -104,9 +104,23 @@ public class TurmaController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<Object> getTurmaByInfo(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla) {
+    public ResponseEntity<Object> getTurmaByInfo(@RequestParam String username, @RequestParam Short ano, @RequestParam String sigla) {
         try {
-            Turma turma = turmaService.getTurmaByInfo(escola, ano, sigla);
+            Turma turma = turmaService.getTurmaByInfo(username, ano, sigla);
+            return new ResponseEntity<>(turma, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        } catch (RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByProfessor")
+    public ResponseEntity<Object> getTurmaByProfessor(@RequestParam String username) {
+        try {
+            List<Turma> turma = turmaService.getTurmaByProfessor(username);
             return new ResponseEntity<>(turma, HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());

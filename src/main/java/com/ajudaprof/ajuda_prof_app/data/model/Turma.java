@@ -9,16 +9,16 @@ public class Turma {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idTurma;
-    @Column
-    private String escola;
+    @OneToOne
+    private Professor professor;
     @Column
     private Short ano;
     @Column
     private String sigla;
 
 
-    public Turma(String escola, Short ano, String sigla) {
-        this.escola = escola;
+    public Turma(Professor professor, Short ano, String sigla) {
+        this.professor = professor;
         this.ano = ano;
         this.sigla = sigla;
     }
@@ -26,12 +26,12 @@ public class Turma {
     public Turma() {
     }
 
-    public String getEscola() {
-        return escola;
+    public Professor getProfessor() {
+        return professor;
     }
 
-    public void setEscola(String escola) {
-        this.escola = escola;
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 
     public Integer getIdTurma() {
@@ -67,19 +67,18 @@ public class Turma {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Turma turma = (Turma) o;
-        return escola.equals(turma.escola) && ano.equals(turma.ano) && sigla.equals(turma.sigla);
+        return professor.equals(turma.professor) && ano.equals(turma.ano) && sigla.equals(turma.sigla);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(escola, ano, sigla);
+        return Objects.hash(professor, ano, sigla);
     }
 
     @Override
     public String toString() {
         return "Turma{" +
-                "idTurma=" + idTurma +
-                ", escola='" + escola + '\'' +
+                "professor=" + professor +
                 ", ano=" + ano +
                 ", sigla='" + sigla + '\'' +
                 '}';

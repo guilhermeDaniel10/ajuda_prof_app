@@ -1,7 +1,9 @@
 package com.ajudaprof.ajuda_prof_app.exception;
 
 public enum ExceptionValues {
-    TURMA_EXISTENTE("Escola, Ano e Sigla"),
+    TURMA_EXISTENTE("Professor, Ano e Sigla"),
+    PROFESSOR_EXISTENTE("Professor"),
+    PROFESSOR_EXISTENTE_ALL_INFO("inserted data"),
 
     TURMA_INEXISTENTE("Escola, Ano e Sigla"),
     ALUNO_EXISTENTE("Primeiro Nome, Último Nome, Turma e Número"),
@@ -10,6 +12,8 @@ public enum ExceptionValues {
     ALUNO_INEXISTENTE_ID("Id"),
     ALUNO_INEXISTENTE_EMAIL("Email"),
     ALUNO_INEXISTENTE("Primeiro Nome e Último Nome"),
+    PROFESSOR_INEXISTENTE_EMAIL("Email"),
+    PROFESSOR_INEXISTENTE_USERNAME("Username"),
     INEXISTENTE("Sem informação");
 
     String erros;
