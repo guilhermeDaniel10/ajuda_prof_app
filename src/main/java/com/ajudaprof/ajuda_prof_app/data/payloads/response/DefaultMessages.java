@@ -2,7 +2,8 @@ package com.ajudaprof.ajuda_prof_app.data.payloads.response;
 
 public enum DefaultMessages {
 
-    SUCESSO_APAGADO("Apagado com sucesso");
+    SUCESSO_APAGADO("Apagado com sucesso"),
+    SUCESSO_BOOTSTRAP("Boostrap feito com sucesso");
 
     String messages;
     DefaultMessages(String messages){

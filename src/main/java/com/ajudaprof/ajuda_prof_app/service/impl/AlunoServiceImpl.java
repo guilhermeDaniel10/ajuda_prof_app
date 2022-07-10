@@ -2,6 +2,7 @@ package com.ajudaprof.ajuda_prof_app.service.impl;
 
 import com.ajudaprof.ajuda_prof_app.data.model.Aluno;
 import com.ajudaprof.ajuda_prof_app.data.model.Turma;
+import com.ajudaprof.ajuda_prof_app.data.model.dto.AlunoDTO;
 import com.ajudaprof.ajuda_prof_app.data.model.dto.TurmaDTO;
 import com.ajudaprof.ajuda_prof_app.data.payloads.request.AlunoRequest;
 import com.ajudaprof.ajuda_prof_app.data.payloads.request.TurmaRequest;
@@ -14,9 +15,15 @@ import com.ajudaprof.ajuda_prof_app.exception.ResourceNotFoundException;
 import com.ajudaprof.ajuda_prof_app.service.interfaces.AlunoService;
 import com.ajudaprof.ajuda_prof_app.service.interfaces.TurmaService;
 import com.ajudaprof.ajuda_prof_app.utils.StringParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,12 +38,12 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     public MessageResponse createAluno(AlunoRequest alunoRequest) {
 
-        TurmaDTO turmaDTO = new TurmaDTO(alunoRequest.getEscola(), alunoRequest.getAno(), alunoRequest.getSigla());
+        TurmaDTO turmaDTO = new TurmaDTO(alunoRequest.getUsernameProfessor(), alunoRequest.getAno(), alunoRequest.getSigla());
         Turma turma;
         try {
-            turma = turmaService.getTurmaByInfo(turmaDTO.getEscola(), turmaDTO.getAno(), turmaDTO.getSigla());
+            turma = turmaService.getTurmaByInfo(turmaDTO.getUsernameProfessor(), turmaDTO.getAno(), turmaDTO.getSigla());
         } catch (ResourceNotFoundException ex) {
-            String[] arrObj = {turmaDTO.getEscola(), turmaDTO.getAno().toString(), turmaDTO.getSigla()};
+            String[] arrObj = {turmaDTO.getUsernameProfessor(), turmaDTO.getAno().toString(), turmaDTO.getSigla()};
             throw new ResourceNotFoundException("Turma", ExceptionValues.TURMA_EXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
         Aluno aluno;
@@ -68,10 +75,10 @@ public class AlunoServiceImpl implements AlunoService {
             String[] arrObj = {alunoRequest.getPrimeiroNome(), alunoRequest.getUltimoNome(), turmaDTO.toStringDTO(), alunoRequest.getNumeroAluno().toString()};
             throw new ResourceNotFoundException("Aluno", ExceptionValues.ALUNO_EXISTENTE_OU_NAO.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
-        TurmaDTO updateTurmaDTO = new TurmaDTO(alunoRequest.getEscola(), alunoRequest.getAno(), alunoRequest.getSigla());
+        TurmaDTO updateTurmaDTO = new TurmaDTO(alunoRequest.getUsernameProfessor(), alunoRequest.getAno(), alunoRequest.getSigla());
         Turma updateTurma;
         try {
-            updateTurma = this.turmaService.getTurmaByInfo(updateTurmaDTO.getEscola(), updateTurmaDTO.getAno(), updateTurmaDTO.getSigla());
+            updateTurma = this.turmaService.getTurmaByInfo(updateTurmaDTO.getUsernameProfessor(), updateTurmaDTO.getAno(), updateTurmaDTO.getSigla());
         } catch (ResourceNotFoundException ex) {
             String[] arrObj = {updateTurmaDTO.toStringDTO()};
             throw new ResourceNotFoundException("Turma", ExceptionValues.TURMA_INEXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
@@ -98,10 +105,10 @@ public class AlunoServiceImpl implements AlunoService {
             String[] arrObj = {String.valueOf(idAluno)};
             throw new ResourceNotFoundException("Aluno", ExceptionValues.ALUNO_INEXISTENTE_ID.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
-        TurmaDTO updateTurmaDTO = new TurmaDTO(alunoRequest.getEscola(), alunoRequest.getAno(), alunoRequest.getSigla());
+        TurmaDTO updateTurmaDTO = new TurmaDTO(alunoRequest.getUsernameProfessor(), alunoRequest.getAno(), alunoRequest.getSigla());
         Turma updateTurma;
         try {
-            updateTurma = this.turmaService.getTurmaByInfo(updateTurmaDTO.getEscola(), updateTurmaDTO.getAno(), updateTurmaDTO.getSigla());
+            updateTurma = this.turmaService.getTurmaByInfo(updateTurmaDTO.getUsernameProfessor(), updateTurmaDTO.getAno(), updateTurmaDTO.getSigla());
         } catch (ResourceNotFoundException ex) {
             String[] arrObj = {updateTurmaDTO.toStringDTO()};
             throw new ResourceNotFoundException("Turma", ExceptionValues.TURMA_INEXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
@@ -131,9 +138,9 @@ public class AlunoServiceImpl implements AlunoService {
     public Aluno getAlunoByTurmaNumero(TurmaDTO turmaDTO, Integer numeroAluno) {
         Turma turma;
         try {
-            turma = turmaService.getTurmaByInfo(turmaDTO.getEscola(), turmaDTO.getAno(), turmaDTO.getSigla());
+            turma = turmaService.getTurmaByInfo(turmaDTO.getUsernameProfessor(), turmaDTO.getAno(), turmaDTO.getSigla());
         } catch (ResourceNotFoundException ex) {
-            String[] arrObj = {turmaDTO.getEscola(), turmaDTO.getAno().toString(), turmaDTO.getSigla()};
+            String[] arrObj = {turmaDTO.getUsernameProfessor(), turmaDTO.getAno().toString(), turmaDTO.getSigla()};
             throw new ResourceNotFoundException("Aluno", ExceptionValues.TURMA_EXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
         Aluno aluno = alunoRepository.findByTurmaAndNumeroAluno(turma, numeroAluno);
@@ -143,6 +150,23 @@ public class AlunoServiceImpl implements AlunoService {
             throw new ResourceNotFoundException("Aluno", ExceptionValues.ALUNO_EXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
         return aluno;
+    }
+
+    @Override
+    public List<Aluno> getAllAlunosByTurma(TurmaDTO turmaDTO) {
+        Turma turma;
+        try {
+            turma = turmaService.getTurmaByInfo(turmaDTO.getUsernameProfessor(), turmaDTO.getAno(), turmaDTO.getSigla());
+        } catch (ResourceNotFoundException ex) {
+            String[] arrObj = {turmaDTO.getUsernameProfessor(), turmaDTO.getAno().toString(), turmaDTO.getSigla()};
+            throw new ResourceNotFoundException("Aluno", ExceptionValues.TURMA_EXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
+        }
+        List<Aluno> alunos = alunoRepository.findByTurma(turma);
+        if (alunos == null || alunos.isEmpty()) {
+            String[] arrObj = {turmaDTO.toStringDTO()};
+            throw new ResourceNotFoundException("Aluno", ExceptionValues.TURMA_SEM_ALUNOS.getValoresErro(), StringParser.stringArrayToString(arrObj));
+        }
+        return alunos;
     }
 
     @Override
@@ -173,7 +197,7 @@ public class AlunoServiceImpl implements AlunoService {
         try {
             Aluno aluno = this.getAlunoByTurmaNumero(turmaDTO, numeroAluno);
             alunoRepository.delete(aluno);
-        } catch (ResourceNotFoundException ex){
+        } catch (ResourceNotFoundException ex) {
             String[] arrObj = {turmaDTO.toStringDTO(), numeroAluno.toString()};
             throw new ResourceNotFoundException("Aluno", ExceptionValues.TURMA_ALUNO_INEXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
         }
@@ -182,5 +206,28 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     public List<Aluno> getAllAlunos() {
         return alunoRepository.findAll();
+    }
+
+    @Override
+    public void boostrapAlunos() throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<AlunoDTO> listAluno = objectMapper.readValue(new File("src/main/resources/alunos.json"), new TypeReference<List<AlunoDTO>>() {
+        });
+        Turma turma = turmaService.getTurmaByInfo(listAluno.get(0).getUsernameProfessor(), listAluno.get(0).getAno(), listAluno.get(0).getSigla());
+
+        for (AlunoDTO alunoDto : listAluno) {
+
+            Aluno newAluno = new Aluno();
+            newAluno.setPrimeiroNome(alunoDto.getPrimeiroNome());
+            newAluno.setUltimoNome(alunoDto.getUltimoNome());
+            newAluno.setEmail(alunoDto.getEmail());
+            newAluno.setTurma(turma);
+            newAluno.setNumeroAluno(alunoDto.getNumeroAluno());
+
+            alunoRepository.save(newAluno);
+        }
+
+
     }
 }

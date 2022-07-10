@@ -19,7 +19,7 @@ public class AlunoRequest {
     private String email;
     @NotBlank
     @NotNull
-    private String escola;
+    private String usernameProfessor;
     @NotBlank
     @NotNull
     private Short ano;
@@ -54,12 +54,12 @@ public class AlunoRequest {
         this.email = email;
     }
 
-    public String getEscola() {
-        return escola;
+    public String getUsernameProfessor() {
+        return usernameProfessor;
     }
 
-    public void setEscola(String escola) {
-        this.escola = escola;
+    public void setUsernameProfessor(String usernameProfessor) {
+        this.usernameProfessor = usernameProfessor;
     }
 
     public Short getAno() {

@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,6 +27,7 @@ public class AlunoController {
     @Autowired
     AlunoService alunoService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/add")
     public ResponseEntity<MessageResponse> addAluno(@RequestBody AlunoRequest aluno) {
         try {
@@ -37,39 +39,54 @@ public class AlunoController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/all")
-    public ResponseEntity<List<Aluno>> getAllTurmas () {
+    public ResponseEntity<List<Aluno>> getAllTurmas() {
         try {
             List<Aluno> alunos = alunoService.getAllAlunos();
             return new ResponseEntity<>(alunos, HttpStatus.OK);
-        } catch( ResourceNotFoundException ex){
+        } catch (ResourceNotFoundException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Object> getAlunoById (@PathVariable("id") Long id) {
+    public ResponseEntity<Object> getAlunoById(@PathVariable("id") Long id) {
         try {
             Aluno aluno = alunoService.getAlunoById(id);
             return new ResponseEntity<>(aluno, HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/find")
-    public ResponseEntity<Object> getAlunoByTurma(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero) {
+    public ResponseEntity<Object> getAlunoByTurma(@RequestParam String usernameProf, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero) {
         try {
-            Aluno aluno = alunoService.getAlunoByTurmaNumero(new TurmaDTO(escola, ano, sigla), numero);
+            Aluno aluno = alunoService.getAlunoByTurmaNumero(new TurmaDTO(usernameProf, ano, sigla), numero);
             return new ResponseEntity<>(aluno, HttpStatus.OK);
         } catch (ResourceNotFoundException | RepeatedResourceException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/findAllByTurma")
+    public ResponseEntity<Object> getAlunosByTurma(@RequestParam String usernameProf, @RequestParam Short ano, @RequestParam String sigla) {
+        try {
+            List<Aluno> alunos = alunoService.getAllAlunosByTurma(new TurmaDTO(usernameProf, ano, sigla));
+            return new ResponseEntity<>(alunos, HttpStatus.OK);
+        } catch (ResourceNotFoundException | RepeatedResourceException ex) {
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/findByNome")
     public ResponseEntity<Object> getAlunoByNome(@RequestParam String primeiroNome, @RequestParam String ultimoNome) {
         try {
@@ -77,10 +94,11 @@ public class AlunoController {
             return new ResponseEntity<>(alunos, HttpStatus.OK);
         } catch (ResourceNotFoundException | RepeatedResourceException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/findByEmail")
     public ResponseEntity<Object> getAlunoByEmail(@RequestParam String email) {
         try {
@@ -88,23 +106,25 @@ public class AlunoController {
             return new ResponseEntity<>(aluno, HttpStatus.OK);
         } catch (ResourceNotFoundException | RepeatedResourceException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/update")
-    public Object updateAlunoByInfo(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero, @RequestBody AlunoRequest aluno) {
+    public Object updateAlunoByInfo(@RequestParam String usernameProf, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero, @RequestBody AlunoRequest aluno) {
         try {
-            return alunoService.updateAluno(new TurmaDTO(escola, ano, sigla), numero, aluno);
+            return alunoService.updateAluno(new TurmaDTO(usernameProf, ano, sigla), numero, aluno);
         } catch (ResourceNotFoundException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         } catch (RepeatedResourceException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/update/{id}")
     public Object updateAlunoById(@PathVariable("id") Long id, @RequestBody AlunoRequest aluno) {
         try {
@@ -114,30 +134,47 @@ public class AlunoController {
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         } catch (RepeatedResourceException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAluno(@PathVariable("id") Long id) {
         try {
             alunoService.deleteAluno(id);
-            return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(),HttpStatus.OK);
-        } catch (ResourceNotFoundException ex){
+            return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(), HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteAlunoByInfo(@RequestParam String escola, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero) {
+    public ResponseEntity<?> deleteAlunoByInfo(@RequestParam String usernameProf, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero) {
         try {
-            alunoService.deleteAlunoByNumeroTurma(new TurmaDTO(escola, ano, sigla), numero);
-            return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(),HttpStatus.OK);
-        } catch (ResourceNotFoundException ex){
+            alunoService.deleteAlunoByNumeroTurma(new TurmaDTO(usernameProf, ano, sigla), numero);
+            return new ResponseEntity<>(DefaultMessages.SUCESSO_APAGADO.getMessageAsResponse(), HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
             MessageResponse erro = new MessageResponse(ex.getMessage());
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/boostrapAlunos")
+    public ResponseEntity<?> bootstrapAlunos() {
+        try {
+            alunoService.boostrapAlunos();
+            return new ResponseEntity<>(DefaultMessages.SUCESSO_BOOTSTRAP.getMessageAsResponse(), HttpStatus.OK);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            MessageResponse erro = new MessageResponse(ex.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
 }

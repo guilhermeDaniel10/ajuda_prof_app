@@ -6,9 +6,10 @@ public enum ExceptionValues {
     PROFESSOR_EXISTENTE_ALL_INFO("inserted data"),
 
     TURMA_INEXISTENTE("Escola, Ano e Sigla"),
-    ALUNO_EXISTENTE("Primeiro Nome, Último Nome, Turma e Número"),
+    ALUNO_EXISTENTE("Primeiro Nome, Último Nome, Professor, Turma e Número"),
+    TURMA_SEM_ALUNOS("Turma sem alunos"),
     TURMA_ALUNO_INEXISTENTE("Turma e Número"),
-    ALUNO_EXISTENTE_OU_NAO("Primeiro Nome, Último Nome, Turma e Número"),
+    ALUNO_EXISTENTE_OU_NAO("Primeiro Nome, Último Nome, Professor, Turma e Número"),
     ALUNO_INEXISTENTE_ID("Id"),
     ALUNO_INEXISTENTE_EMAIL("Email"),
     ALUNO_INEXISTENTE("Primeiro Nome e Último Nome"),

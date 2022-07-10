@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     Aluno findByTurmaAndNumeroAluno(Turma turma, Integer numeroAluno);
+
     Aluno findByEmail(String email);
+
     List<Aluno> findByPrimeiroNomeAndUltimoNome(String primeiroNome, String ultimoNome);
+
+    List<Aluno> findByTurma(Turma turma);
 }

@@ -4,28 +4,28 @@ import java.util.Objects;
 
 public class TurmaDTO {
 
-    private String escola;
+    private String usernameProfessor;
     private Short ano;
     private String sigla;
 
-    public TurmaDTO(String escola, Short ano, String sigla) {
-        this.escola = escola;
+    public TurmaDTO(String usernameProfessor, Short ano, String sigla) {
+        this.usernameProfessor = usernameProfessor;
         this.ano = ano;
         this.sigla = sigla;
     }
 
     public TurmaDTO(TurmaDTO turmaDTO){
-        this.escola = turmaDTO.escola;
+        this.usernameProfessor = turmaDTO.usernameProfessor;
         this.ano = turmaDTO.ano;
         this.sigla = turmaDTO.sigla;
     }
 
-    public String getEscola() {
-        return escola;
+    public String getUsernameProfessor() {
+        return usernameProfessor;
     }
 
-    public void setEscola(String escola) {
-        this.escola = escola;
+    public void setUsernameProfessor(String usernameProfessor) {
+        this.usernameProfessor = usernameProfessor;
     }
 
     public Short getAno() {
@@ -49,24 +49,24 @@ public class TurmaDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TurmaDTO turmaDTO = (TurmaDTO) o;
-        return escola.equals(turmaDTO.escola) && ano.equals(turmaDTO.ano) && sigla.equals(turmaDTO.sigla);
+        return usernameProfessor.equals(turmaDTO.usernameProfessor) && ano.equals(turmaDTO.ano) && sigla.equals(turmaDTO.sigla);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(escola, ano, sigla);
+        return Objects.hash(usernameProfessor, ano, sigla);
     }
 
     @Override
     public String toString() {
         return "TurmaDTO{" +
-                "escola='" + escola + '\'' +
+                "username Professor='" + usernameProfessor + '\'' +
                 ", ano=" + ano +
                 ", sigla='" + sigla + '\'' +
                 '}';
     }
 
     public String toStringDTO(){
-        return this.getEscola() + ", " + this.ano + "º" + this.sigla;
+        return this.getUsernameProfessor() + ", " + this.ano + "º" + this.sigla;
     }
 }
