@@ -2,6 +2,7 @@ package com.ajudaprof.ajuda_prof_app.data.model;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Aluno {
@@ -19,7 +20,16 @@ public class Aluno {
     @Column
     private Integer numeroAluno;
 
+    @OneToMany(mappedBy="aluno")
+    private Set<Resposta> respostas;
 
+    public Set<Resposta> getRespostas() {
+        return respostas;
+    }
+
+    public void setRespostas(Set<Resposta> respostas) {
+        this.respostas = respostas;
+    }
 
     public Aluno() {
 
@@ -110,6 +120,7 @@ public class Aluno {
                 ", email='" + email + '\'' +
                 ", turma=" + turma +
                 ", numeroAluno=" + numeroAluno +
+                ", items=" + respostas +
                 '}';
     }
 }

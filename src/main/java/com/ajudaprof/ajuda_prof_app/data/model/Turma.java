@@ -2,6 +2,7 @@ package com.ajudaprof.ajuda_prof_app.data.model;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Turma {
@@ -15,6 +16,9 @@ public class Turma {
     private Short ano;
     @Column
     private String sigla;
+
+    @OneToMany(mappedBy = "turma")
+    private Set<Teste> testes;
 
 
     public Turma(Professor professor, Short ano, String sigla) {
