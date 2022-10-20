@@ -11,4 +11,6 @@ public interface TurmaRepository extends JpaRepository<Turma, Integer> {
     Turma findByProfessorAndAnoAndSigla(Professor professor, Short ano, String sigla);
     List<Turma> findByProfessor(Professor professor);
 
+    Turma findByIdTurma(Integer idTurma);
+
 }
