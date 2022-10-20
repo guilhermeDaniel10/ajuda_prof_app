@@ -10,15 +10,19 @@ public class Turma {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idTurma;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="professor_id", nullable=false)
     private Professor professor;
     @Column
     private Short ano;
     @Column
     private String sigla;
 
-    @OneToMany(mappedBy = "turma")
+    @OneToMany(mappedBy = "turma",cascade = CascadeType.ALL)
     private Set<Teste> testes;
+
+    @OneToMany(mappedBy = "turma",cascade = CascadeType.ALL)
+    private Set<Aluno> alunos;
 
 
     public Turma(Professor professor, Short ano, String sigla) {

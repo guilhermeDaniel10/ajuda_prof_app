@@ -15,12 +15,13 @@ public class Aluno {
     private String ultimoNome;
     @Column
     private String email;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "turma_id", nullable = false)
     private Turma turma;
     @Column
     private Integer numeroAluno;
 
-    @OneToMany(mappedBy="aluno")
+    @OneToMany(mappedBy="aluno", cascade= CascadeType.ALL)
     private Set<Resposta> respostas;
 
     public Set<Resposta> getRespostas() {

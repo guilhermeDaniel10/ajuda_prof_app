@@ -28,11 +28,11 @@ public class Teste {
     @JsonDeserialize(as = LocalDate.class)
     private LocalDate dataTeste;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turma_id", nullable = false)
     private Turma turma;
 
-    @OneToMany(mappedBy = "teste")
+    @OneToMany(mappedBy = "teste", cascade = CascadeType.ALL)
     private Set<Pergunta> perguntas;
 
     public Long getIdTeste() {

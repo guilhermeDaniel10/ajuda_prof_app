@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -62,4 +64,45 @@ public class TesteServiceImpl implements TesteService {
             return new MessageResponse("Novo teste adicionado");
         }
     }
+
+    @Override
+    public MessageResponse addPergunta(Long idTeste, PerguntaRequest perguntaRequest) {
+        Teste teste;
+        try {
+            teste = this.testeRepository.findById(idTeste).get();
+            if (teste == null) {
+                String[] arrObj = {String.valueOf(idTeste)};
+                throw new ResourceNotFoundException("Teste", ExceptionValues.TESTE_EXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
+            }
+        } catch (NoSuchElementException ex) {
+            String[] arrObj = {String.valueOf(idTeste)};
+            throw new ResourceNotFoundException("Teste", ExceptionValues.TESTE_EXISTENTE.getValoresErro(), StringParser.stringArrayToString(arrObj));
+        }
+
+        Set<Pergunta> perguntasExistentes = teste.getPerguntas();
+
+        Pergunta perguntaNova = new PerguntaBuilder(teste, perguntaRequest.getPergunta(), perguntaRequest.getCotacao()).build();
+
+        if (!perguntasExistentes.contains(perguntaNova)) {
+            teste.addPergunta(perguntaNova);
+            perguntaRepository.save(perguntaNova);
+            return new MessageResponse("Nova pergunta adicionada");
+        }
+
+        String[] arrObj = {perguntaRequest.getPergunta()};
+        throw new RepeatedResourceException("Pergunta", ExceptionValues.PERGUNTA_REPETIDA.getValoresErro(), StringParser.stringArrayToString(arrObj));
+    }
+
+    @Override
+    public void deleteTeste(Long idTeste) {
+        if (testeRepository.findById(idTeste) != null) {
+            testeRepository.deleteById(idTeste);
+        } else throw new ResourceNotFoundException("Teste", "id", idTeste);
+    }
+
+    @Override
+    public void deletePergunta(Long idTeste, PerguntaRequest perguntaRequest) {
+
+    }
+
 }

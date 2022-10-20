@@ -13,6 +13,8 @@ import java.util.Optional;
 
 public interface AlunoService {
     MessageResponse createAluno(AlunoRequest alunoRequest);
+
+    MessageResponse createMultipleAlunos(List<AlunoRequest> alunoRequest);
     Aluno updateAluno(TurmaDTO turma, Integer numeroAluno, AlunoRequest alunoRequest);
 
     Aluno updateAlunoById(Long idAluno, AlunoRequest alunoRequest);

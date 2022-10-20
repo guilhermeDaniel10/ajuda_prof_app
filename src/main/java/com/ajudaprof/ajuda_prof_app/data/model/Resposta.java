@@ -10,14 +10,14 @@ public class Resposta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idResposta;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="aluno_id", nullable=false)
     private Aluno aluno;
 
     @Column
     private Double cotacaoResposta;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="pergunta_id", nullable=false)
     private Pergunta pergunta;
 

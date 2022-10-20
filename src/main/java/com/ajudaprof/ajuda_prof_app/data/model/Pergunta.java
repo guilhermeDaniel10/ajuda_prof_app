@@ -13,7 +13,7 @@ public class Pergunta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idPergunta;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teste_id", nullable = false)
     private Teste teste;
 
@@ -23,7 +23,7 @@ public class Pergunta {
     @Column
     private Double cotacao;
 
-    @OneToMany(mappedBy = "pergunta")
+    @OneToMany(mappedBy = "pergunta", cascade = CascadeType.ALL)
     private Set<Resposta> respostas;
 
 

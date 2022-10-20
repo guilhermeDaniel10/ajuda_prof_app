@@ -30,6 +30,8 @@ public enum ExceptionValues {
 
     PROFESSOR_INEXISTENTE_USERNAME("Username"),
 
+    PERGUNTA_REPETIDA("Pergunta"),
+
     INEXISTENTE("Sem informação");
 
     String erros;

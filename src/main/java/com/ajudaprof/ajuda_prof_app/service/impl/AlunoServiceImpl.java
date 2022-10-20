@@ -65,6 +65,14 @@ public class AlunoServiceImpl implements AlunoService {
     }
 
     @Override
+    public MessageResponse createMultipleAlunos(List<AlunoRequest> alunoRequest) {
+        for(AlunoRequest a : alunoRequest){
+            this.createAluno(a);
+        }
+        return new MessageResponse("Novos alunos adicionados");
+    }
+
+    @Override
     public Aluno updateAluno(TurmaDTO turmaDTO, Integer numeroAluno, AlunoRequest alunoRequest) {
         Aluno aluno;
         Turma turma;

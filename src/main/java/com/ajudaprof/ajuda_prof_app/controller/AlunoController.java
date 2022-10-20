@@ -40,6 +40,18 @@ public class AlunoController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/addMultiple")
+    public ResponseEntity<MessageResponse> addMultipleAlunos(@RequestBody List<AlunoRequest> alunos) {
+        try {
+            MessageResponse newAluno = alunoService.createMultipleAlunos(alunos);
+            return new ResponseEntity<>(newAluno, HttpStatus.CREATED);
+        } catch (ResourceAlreadyExists | ResourceNotFoundException | RepeatedResourceException exception) {
+            MessageResponse erro = new MessageResponse(exception.getMessage());
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/all")
     public ResponseEntity<List<Aluno>> getAllTurmas() {
         try {
@@ -174,7 +186,6 @@ public class AlunoController {
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
         }
     }
-
 
 
 }

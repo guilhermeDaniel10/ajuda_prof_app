@@ -3,6 +3,7 @@ package com.ajudaprof.ajuda_prof_app.data.model;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Professor {
@@ -24,6 +25,9 @@ public class Professor {
 
     @Column
     private String escola;
+
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
+    private Set<Turma> turmas;
 
     public Professor(){
 
