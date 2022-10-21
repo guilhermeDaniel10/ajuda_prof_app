@@ -11,10 +11,6 @@ public class RespostaRequest {
 
     @NotBlank
     @NotNull
-    private Long idPergunta;
-
-    @NotBlank
-    @NotNull
     private Double cotacaoResposta;
 
     public Long getIdAluno() {
@@ -23,14 +19,6 @@ public class RespostaRequest {
 
     public void setIdAluno(Long idAluno) {
         this.idAluno = idAluno;
-    }
-
-    public Long getIdPergunta() {
-        return idPergunta;
-    }
-
-    public void setIdPergunta(Long idPergunta) {
-        this.idPergunta = idPergunta;
     }
 
     public Double getCotacaoResposta() {

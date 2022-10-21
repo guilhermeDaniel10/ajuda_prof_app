@@ -11,15 +11,25 @@ public class Resposta {
     private Long idResposta;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="aluno_id", nullable=false)
+    @JoinColumn(name = "aluno_id", nullable = false)
     private Aluno aluno;
 
     @Column
     private Double cotacaoResposta;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="pergunta_id", nullable=false)
+    @JoinColumn(name = "pergunta_id", nullable = false)
     private Pergunta pergunta;
+
+    public Resposta(Aluno aluno, Double cotacaoResposta, Pergunta pergunta) {
+        this.aluno = aluno;
+        this.cotacaoResposta = cotacaoResposta;
+        this.pergunta = pergunta;
+    }
+
+    public Resposta() {
+    }
+
 
     public Long getIdResposta() {
         return idResposta;
