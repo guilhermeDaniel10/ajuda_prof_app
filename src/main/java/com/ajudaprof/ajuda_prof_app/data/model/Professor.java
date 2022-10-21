@@ -29,6 +29,20 @@ public class Professor {
     @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
     private Set<Turma> turmas;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "professor_id", referencedColumnName = "idProfessor"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public Professor(){
 
     }

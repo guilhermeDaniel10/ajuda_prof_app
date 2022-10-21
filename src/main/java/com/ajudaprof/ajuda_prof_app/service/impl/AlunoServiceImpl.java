@@ -5,10 +5,8 @@ import com.ajudaprof.ajuda_prof_app.data.model.Turma;
 import com.ajudaprof.ajuda_prof_app.data.model.dto.AlunoDTO;
 import com.ajudaprof.ajuda_prof_app.data.model.dto.TurmaDTO;
 import com.ajudaprof.ajuda_prof_app.data.payloads.request.AlunoRequest;
-import com.ajudaprof.ajuda_prof_app.data.payloads.request.TurmaRequest;
 import com.ajudaprof.ajuda_prof_app.data.payloads.response.MessageResponse;
 import com.ajudaprof.ajuda_prof_app.data.repository.AlunoRepository;
-import com.ajudaprof.ajuda_prof_app.data.repository.TurmaRepository;
 import com.ajudaprof.ajuda_prof_app.exception.ExceptionValues;
 import com.ajudaprof.ajuda_prof_app.exception.RepeatedResourceException;
 import com.ajudaprof.ajuda_prof_app.exception.ResourceNotFoundException;
@@ -238,4 +236,5 @@ public class AlunoServiceImpl implements AlunoService {
 
 
     }
+
 }

@@ -6,6 +6,10 @@ public enum ExceptionValues {
 
     PROFESSOR_EXISTENTE("Professor"),
 
+    PROFESSOR_EXISTENTE_USERNAME("Username Professor"),
+
+    PROFESSOR_EXISTENTE_EMAIL("Email Professor"),
+
     PROFESSOR_EXISTENTE_ALL_INFO("inserted data"),
 
     TURMA_INEXISTENTE("Escola, Ano e Sigla"),

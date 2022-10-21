@@ -1,17 +1,14 @@
 package com.ajudaprof.ajuda_prof_app.controller;
 
 import com.ajudaprof.ajuda_prof_app.data.model.Aluno;
-import com.ajudaprof.ajuda_prof_app.data.model.Turma;
 import com.ajudaprof.ajuda_prof_app.data.model.dto.TurmaDTO;
 import com.ajudaprof.ajuda_prof_app.data.payloads.request.AlunoRequest;
-import com.ajudaprof.ajuda_prof_app.data.payloads.request.TurmaRequest;
 import com.ajudaprof.ajuda_prof_app.data.payloads.response.DefaultMessages;
 import com.ajudaprof.ajuda_prof_app.data.payloads.response.MessageResponse;
 import com.ajudaprof.ajuda_prof_app.exception.RepeatedResourceException;
 import com.ajudaprof.ajuda_prof_app.exception.ResourceAlreadyExists;
 import com.ajudaprof.ajuda_prof_app.exception.ResourceNotFoundException;
 import com.ajudaprof.ajuda_prof_app.service.interfaces.AlunoService;
-import com.ajudaprof.ajuda_prof_app.service.interfaces.TurmaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
