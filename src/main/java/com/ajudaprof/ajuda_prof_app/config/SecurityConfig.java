@@ -54,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/test-heroku/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority("ROLE_ADMIN")
