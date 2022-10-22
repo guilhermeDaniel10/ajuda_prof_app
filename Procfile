@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/ajuda-prof-rest-0.0.1-SNAPSHOT.jar
+ web: java -jar build/libs/ajuda_prof_app-1.0.jar
