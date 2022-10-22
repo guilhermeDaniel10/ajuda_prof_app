@@ -1,1 +1,1 @@
- web: java -jar build/libs/ajuda_prof_app-0.0.1.jar
+ web: java -jar target/ajuda_prof_app-0.0.1-SNAPSHOT.jar
