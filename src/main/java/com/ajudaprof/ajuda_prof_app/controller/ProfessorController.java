@@ -40,12 +40,6 @@ public class ProfessorController {
     @Autowired
     ProfessorService professorService;
 
-    @Autowired
-    ProfessorRepository professorRepository;
-
-    @Autowired
-    AuthService authService;
-
     @PostMapping("/add")
     public ResponseEntity<MessageResponse> addProfessor(@RequestBody ProfessorRequest professor) {
         try {
@@ -54,34 +48,6 @@ public class ProfessorController {
         } catch (ResourceAlreadyExists | ResourceNotFoundException | RepeatedResourceException  exception) {
             MessageResponse erro = new MessageResponse(exception.getMessage());
             return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @ApiOperation(value = "REST API to Signin or Login Professor")
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerProfessor(@RequestBody ProfessorRequest professorDto){
-        try {
-            return authService.registerProfessor(professorDto);
-        } catch (ResourceNotFoundException ex) {
-            MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
-        } catch (RepeatedResourceException ex) {
-            MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @ApiOperation(value = "REST API to Register or Signup user to Blog app")
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginDto){
-        try {
-            return authService.authenticateUser(loginDto);
-        } catch (ResourceNotFoundException ex) {
-            MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
-        } catch (RepeatedResourceException ex) {
-            MessageResponse erro = new MessageResponse(ex.getMessage());
-            return new ResponseEntity<>(erro,HttpStatus.BAD_REQUEST);
         }
     }
 

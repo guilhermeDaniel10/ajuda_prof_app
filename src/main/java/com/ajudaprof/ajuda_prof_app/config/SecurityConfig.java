@@ -31,15 +31,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(){
-        return  new JwtAuthenticationFilter();
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-//.antMatchers(HttpMethod.GET, "/api/**").permitAll()
+
+    //.antMatchers(HttpMethod.GET, "/api/**").permitAll()
 //                .antMatchers("/api/auth/**").permitAll()
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -52,11 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/**").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest()
                 .authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
