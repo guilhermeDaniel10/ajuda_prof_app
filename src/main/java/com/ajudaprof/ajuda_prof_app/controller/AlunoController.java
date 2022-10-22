@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+//@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/aluno")
 public class AlunoController {
@@ -24,7 +25,7 @@ public class AlunoController {
     @Autowired
     AlunoService alunoService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/add")
     public ResponseEntity<MessageResponse> addAluno(@RequestBody AlunoRequest aluno) {
         try {
@@ -36,7 +37,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/addMultiple")
     public ResponseEntity<MessageResponse> addMultipleAlunos(@RequestBody List<AlunoRequest> alunos) {
         try {
@@ -48,7 +49,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/all")
     public ResponseEntity<List<Aluno>> getAllTurmas() {
         try {
@@ -71,7 +72,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/find")
     public ResponseEntity<Object> getAlunoByTurma(@RequestParam String usernameProf, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero) {
         try {
@@ -83,7 +84,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/findAllByTurma")
     public ResponseEntity<Object> getAlunosByTurma(@RequestParam String usernameProf, @RequestParam Short ano, @RequestParam String sigla) {
         try {
@@ -95,7 +96,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/findByNome")
     public ResponseEntity<Object> getAlunoByNome(@RequestParam String primeiroNome, @RequestParam String ultimoNome) {
         try {
@@ -107,7 +108,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/findByEmail")
     public ResponseEntity<Object> getAlunoByEmail(@RequestParam String email) {
         try {
@@ -119,7 +120,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/update")
     public Object updateAlunoByInfo(@RequestParam String usernameProf, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero, @RequestBody AlunoRequest aluno) {
         try {
@@ -133,7 +134,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/update/{id}")
     public Object updateAlunoById(@PathVariable("id") Long id, @RequestBody AlunoRequest aluno) {
         try {
@@ -147,7 +148,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAluno(@PathVariable("id") Long id) {
         try {
@@ -159,7 +160,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteAlunoByInfo(@RequestParam String usernameProf, @RequestParam Short ano, @RequestParam String sigla, @RequestParam Integer numero) {
         try {
@@ -171,7 +172,7 @@ public class AlunoController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/boostrapAlunos")
     public ResponseEntity<?> bootstrapAlunos() {
         try {

@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Collections;
 
+//@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/professor")
 public class ProfessorController {

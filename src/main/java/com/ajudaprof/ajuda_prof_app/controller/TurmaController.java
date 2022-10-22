@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+//@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/turma")
 public class TurmaController {
@@ -23,7 +24,7 @@ public class TurmaController {
     @Autowired
     TurmaService turmaService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/add")
     public ResponseEntity<MessageResponse> addTurma(@RequestBody TurmaRequest turma) {
         try {
@@ -80,7 +81,7 @@ public class TurmaController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/all")
     public ResponseEntity<List<Turma>> getAllTurmas () {
         try {
