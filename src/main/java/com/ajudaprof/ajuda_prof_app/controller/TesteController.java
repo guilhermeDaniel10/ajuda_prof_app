@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 //@CrossOrigin(maxAge = 3600)
+//@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/api/teste")
 public class TesteController {

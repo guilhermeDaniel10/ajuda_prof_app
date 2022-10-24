@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 //@CrossOrigin(maxAge = 3600)
+
 @RestController
 @RequestMapping("/api/resposta")
 public class RespostaController {
@@ -20,7 +21,7 @@ public class RespostaController {
     @Autowired
     RespostaService respostaService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/addOrUpdateRespostas")
     public ResponseEntity<MessageResponse> addOrUpdateRespostas(@RequestBody List<PerguntaWithRespostaRequest> respostas) {
         try {

@@ -42,9 +42,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //.antMatchers(HttpMethod.GET, "/api/**").permitAll()
 //                .antMatchers("/api/auth/**").permitAll()
+
+    // DEPOIS DE AUTENTICACAO, ALTERAR AQUI
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().and()
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
@@ -53,14 +56,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                /*.antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/test-heroku/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority("ROLE_ADMIN")*/
+                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/**").permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+        ;
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
